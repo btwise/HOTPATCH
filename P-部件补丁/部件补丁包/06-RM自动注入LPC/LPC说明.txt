@@ -1,0 +1,20 @@
+
+一、说明：
+自动注入LPC。适用于6代以下机器，6代以上机器无需注入LPC。
+
+出处：RehabMan
+参考：https://github.com/RehabMan/OS-X-Clover-Laptop-Config/blob/master/hotpatch/SSDT-LPC.dsl
+
+二、补丁：
+SSDT-RM-LPC————自动注入LPC。
+
+三、更名(见“基本更名.plist”)：
+LPC to LPCB
+
+DSDT中搜索“0x001F0000”，如果设备名称不是“LPCB”，更名为LPCB。
+如果搜索到多个"0x001F0000"时，仔细判断是否需要更名。
+
+注意：
+如果ACPI中包涵ECDT.aml文件，可能需要修正ECDT，参见《关于ECDT及其修正方法》。
+
+===end

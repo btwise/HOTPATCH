@@ -1,0 +1,17 @@
+
+一、说明：
+注入SBUS。
+
+出处：RehabMan
+参考：https://github.com/RehabMan/OS-X-Clover-Laptop-Config/blob/master/hotpatch/SSDT-SMBUS.dsl
+
+二、补丁：
+SSDT-RM-SBUS
+
+三、更名(见“基本更名.plist”)：
+SMBU to SBUS
+
+DSDT中搜索“0x001F0003”(6代以前)或者“0x001F0004”(6代及以后)，将其设备名称更名为SBUS
+
+
+===end

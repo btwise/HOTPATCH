@@ -1,0 +1,84 @@
+遮蔽法定制说明:
+***
+本方法：用HOTpatch实现遮蔽法驱动USB以及完成USB端口的定制。
+
+***
+***
+原理：
+ACPI中的_UPC定义了USB的属性，修改这些属性可以使USB工作正常。
+做法是：
+将所有_UPC更名为XUPC，使USB失效。然后，我们重新写一个补丁文件，这个文件
+重新描述了USB数量、每一个端口属性等。这些内容和实际的硬件完全一致，这样
+既驱动了USB，也达到了对USB端口定制的目的。
+
+然而，
+可能ACPI中的一个或者多个文件也包括了_UPC，对_UPC的更名也同样使相关的部件
+失效，需要对这些文件进行恢复。
+做法是：
+找出这些文件，通过config把它们drop，然后再把这些文件放到patched里。
+
+
+***
+***
+一、基本要求
+1 清除Hackintool生成的驱动——USBPorts.kext。
+2 清除RM的驱动USBInjectAll.kext，以及定制的SSDT-***文件。
+3 XHC控制器名称：XHC
+4 USB2.0名称：EH01、EH02
+
+二、准备工作
+1 提取ACPI
+2 找出USB以外的，包括_UPC的ACPI文件，如：
+  联想小新IWL：SSDT-7-CB-01、SSDT-8-CB-01
+  dell5480：SSDT-7-TbtTypeC
+3 记录他们的“Length”值，如：
+  SSDT-7-CB-01		：5279
+  SSDT-8-CB-01		：2975
+  SSDT-7-TbtTypeC	：1303
+以上参考‘遮蔽法更名和drop.plist’、示例、图式。
+
+三、更名
+_UPC to XUPC(all)
+
+四、drop
+联想小新IWL:	SSDT  Length  5279
+		SSDT  Length  2975
+
+dell5480:	SSDT  Length  1303
+
+以上参考‘遮蔽法更名和drop.plist’、示例、图式。
+
+五、制作补丁文件和USB端口定制
+(一)关于_UPC定义
+Name (_UPC, Package ()
+{
+   0xFF, 
+   XXXX, 
+   0x00, 
+   0x00
+})
+
+其中：
+第一个字节必须是0xFF(0xFF表示该端口存在，0表示该端口不存在)
+第二个字节XXXX定义如下:
+0x00————usb2.0
+0x03————usb3.0
+0xFF————内置
+0x09————typeC
+
+(二)定制XHC
+通常，XHC下有RHUB（也可能其他名字），所有的端口都在RHUB之下。定制时注意，端口的
+名称（如：_SB.PCI0.XHC.RHUB.HS01）必须和DSDT完全一致。
+
+(三)定制EH01、EH02
+EH01和EH02为标准的USB2.0。EH01和EH02必须挂载一个HUB（如：_SB.PCI0.EH01.URTH.URMH）。
+所有的端口都在这个HUB下（如：_SB.PCI0.EH01.URTH.URMH.PRT0）。
+EH01的 HUB下允许接入8个端口；
+EH02的 HUB下允许接入6个端口；
+同上，端口的名称（如：_SB.PCI0.EH01.URTH.URMH.PRT0）必须和DSDT完全一致。
+
+参考定制文件样本。
+
+
+
+*****END

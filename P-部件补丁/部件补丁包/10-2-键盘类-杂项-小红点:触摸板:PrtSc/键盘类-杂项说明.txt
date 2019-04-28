@@ -1,0 +1,33 @@
+
+一、说明：
+SSDT-Keyboard补丁由冬瓜提供。
+
+二、补丁：
+SSDT-Keyboard————TP小红点补丁1
+SSDT-RMCF-RedPoint————TP小红点补丁2
+SSDT-RMCF-Trackpad————强制开启触摸板
+SSDT-RMCF-PrtSc-disable————禁止PrtSc。部分机器“PrtSc”按键可禁止触摸板，该补丁
+			   使“禁止触摸板功能”失效。
+SSDT-RMCF-TrackpadAndPrtSc————补丁合并样本
+
+
+三、设备名称要求
+LPC名称：LPCB
+键盘名称：PS2K
+
+四、使用
+1 SSDT-Keyboard
+修改补丁里"RM,oem-table-id"的子项，选择适合自己的。
+如："T420"、"T460"、"T560"、"Thinkpad_ClickPad"、"Thinkpad_Trackpad"等。
+
+2 SSDT-RMCF*
+包涵“RMCF”的补丁不可同时使用，如果有多个补丁需求，必须合并后再使用。参见合并样本。
+更多的“RMCF”类补丁见：
+https://bitbucket.org/RehabMan/os-x-voodoo-ps2-controller/src
+
+3 使用SSDT-RMCF-Trackpad必须保证VoodooPS2Controller.kext\Contents\PlugIns\下有：
+  VoodooPS2Mouse.kext。
+
+
+===end
+

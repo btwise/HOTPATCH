@@ -1,0 +1,18 @@
+
+一、说明：
+当XHC下存在XSEL、ESEL、XWAK时，可能造成某些机器无法进入系统。
+如果出现上述问题，使用本方法。
+
+二、补丁：
+SSDT-RM-XHC-ESEL3in1
+
+三、更名
+XHC:XSEL to XSEZ
+XHC:ESEL to ESEZ
+XHC:XWAK to XWAZ
+
+
+四、其他设备名称要求
+XHC
+
+===end

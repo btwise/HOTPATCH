@@ -1,0 +1,82 @@
+说明：
+
+===
+一、概述：
+ACPI规范了3种睡眠的方式，分别是：
+方式(1)• PNP0C0C — Power Button Device
+方式(2)• PNP0C0D — Lid Device
+方式(3)• PNP0C0E — Sleep Button Device
+
+通常情况下，苹果系统使用菜单睡眠、系统睡眠和方式(2)睡眠。
+大多数机器提供了睡眠按键(‘小月亮’按键)。当按下这个按键时，系统执行方式(3)睡眠。
+此时，ACPI向系统传递了关机参数而非睡眠参数，从而使睡眠失败，系统崩溃。如果要使
+用PNP0C0E睡眠必须修正这个参数。
+
+===
+二、PNP0C0E强制睡眠方案：
+1 制作补丁：SSDT-SleepDefine。补丁里设定2个参数：MODE和MPWS。
+  MODE————选择睡眠模式
+  0:方式(2)睡眠————传统睡眠方法
+  1:方式(3)睡眠
+  MPWS————事件传递参数
+  方式(3)睡眠情况下，ACPI根据MPWS的改变纠正“关机参数”为“睡眠参数”。
+2 指定某个按键(如：FN+F4)使用方式(3)睡眠。
+3 查找并确认盖子事件响应位置。盖子事件响应位置通常位于_QXX。
+  如：多数Thinkpad机器是_Q2B；联想小新是_Q15。
+4 本方法需要综合补丁SSDT-%PTSWAK-mergePRO3来配合完成。见《PTSWAK综合补丁》。
+
+===
+三、使用
+1 准备工作：
+DSDT中，搜索PNP0C0E：
+如果PNP0C0E存在，进一步确认其设备名称是否是SLPB，非SLPB的更名为SLPB。
+如果搜索不到PNP0C0E，添加SSDT-SLPB-add补丁。
+
+2 补丁和更名
+(1)SSDT-SleepDefine
+根据需要修改MODE模式。
+MODE=0，使用方式(2)睡眠；
+MODE=1，使用方式(3)睡眠。
+补丁里同时定义了MPWS，并赋予初始值。
+
+(2)SSDT-SleepLid-***
+该补丁为盖子睡眠补丁，集成了方式(2)和方式(3)两种睡眠模式，由MODE选择睡眠模式。
+在方式(3)下，MPWS向ACPI传递信息，由《PTSWAK综合补丁》加以纠正。
+
+更名：
+_Q2B to XQ2B(TP-LID)
+_Q15 to XQ15(lenovoAir-LID)
+
+
+(3)SSDT-SleepKey-***补丁
+该补丁为按键睡眠补丁，当被指定的睡眠按键按下后，实现方式(3)睡眠。
+在方式(3)下，MPWS向ACPI传递信息，由《PTSWAK综合补丁》加以纠正。
+
+样本中指定了Thinkpad机器的FN+F4为睡眠按键，FN+F4位于_Q13。
+更名：
+_Q13 to XQ13(TP-FnF4)
+
+
+(4)SSDT-SleepLidandKey-dell5480
+dell5480比较特殊，盖子和睡眠按键都在NEVT方法内。
+更名：
+NEVT to XEVT(dell)——特殊
+
+===
+四、完成本方法的补丁组合：
+SSDT-SleepDefine + 
+SSDT-SleepLid-*** +
+SSDT-SleepKey-***
+以及：
+SSDT-%PTSWAK-mergePRO3 +
+SSDT-SLPB-add（可能）
+
+===
+五、PNP0C0E睡眠模式的特点：
+1 无论盒盖还是按下睡眠功能键，会立即睡眠，睡眠过程稍快于传统的方式(2)睡眠。
+2 未成功睡眠前，无法终止睡眠。
+3 连接外显的情况下，盒盖睡眠。
+
+
+===end
+

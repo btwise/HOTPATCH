@@ -1,0 +1,59 @@
+===
+Properties方法要求：
+===
+
+一、对于驱动：
+更新clover和lilu以及它的关联驱动至最新版。
+删除以下驱动：
+- IntelGraphicsFixup
+- NvidiaGraphicsFixup
+- CoreDisplayFixup
+- Shiki
+
+二、对于config，清除以下设置
+
+1 ACPI\Fixes:
+- AddHDMI
+- FixDisplay
+- FixIntelGfx
+- AddIMEI
+
+2 BOOT/Arguments: 
+-disablegfxfirmware
+
+3 Devices/FakeID：
+- IntelGFX=空
+
+4 Devices/Properties【HEX】：
+- UseIntelHDMI=空
+
+5 Devices/Arbitrary：
+- 所有内容
+
+6 Devices/AddProperties
+- 所有内容
+
+7 Graphics:
+
+- Inject ATI=NO
+- Inject Intel=NO
+- Inject NVidia=NO
+- ig-platform-id=空
+
+8 Kernel and KextPatches
+
+- KextsToPatch 所有和IGPU、HDMI有关内容
+- KernelToPatch 所有和IGPU、DVMTI有关内容
+
+
+三、删除以下SSDT补丁(CLOVER/ACPI/patched)
+
+1 和IGPU有关的；
+2 和HDMI有关的；
+3 和HDEF以及HDAU有关的；
+
+
+===
+end
+
+

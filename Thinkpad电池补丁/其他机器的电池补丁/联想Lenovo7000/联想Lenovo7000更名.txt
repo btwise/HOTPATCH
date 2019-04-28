@@ -1,0 +1,14 @@
+1:_BIF to XBIF
+Find      :5F424946
+Replace   :58424946
+TgtBridge :no
+====
+2:_BST to XBST
+Find      :5F425354
+Replace   :58425354
+TgtBridge :no
+====
+3:EC0 to EC
+
+===
+end
