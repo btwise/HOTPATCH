@@ -14,11 +14,19 @@ SSDT-XOSI-Win10x
 OSID to XSID
 _OSI to XOSI
 
-注：OSID to XSID必须在_OSI to XOSI之前。
+说明一下“OSID to XSID”：
+原本不需要“OSID to XSID”，只因为“_OSI”和“OSID”重命了"OSI"。当“_OSI to XOSI”时，
+会造成一处“OSID”被更名而出现错误。因此，先将“OSID”更名为其他，以避开“_OSI to XOSI”
+对“OSID”造成影响。
+
+当某些机器上(如dell)的DSDT有“OSID”时，应当“OSID to XSID”和“_OSI to XOSI”一同使用，
+并“OSID to XSID”在“_OSI to XOSI”之前。
 
 四、使用：
 1 对于双系统，补丁版本应和Windows系统版本一致。
 2 某些部件的具体要求。如:I2C要求操作系统补丁是SSDT-XOSI-win8以上。
+
+注：SSDT-XOSI-Win10x支持的windows10版本："Windows 2018.2"。
 
 
 ===end

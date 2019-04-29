@@ -4,14 +4,18 @@
 一、说明
 本补丁：
 1 集成了关机变重启、唤醒后呼吸灯恢复正常等补丁。
-2 集成了EXT1和EXT3扩展补丁接口，分别位于睡眠(_PTS)和唤醒(_WAK)内。
-  参考样本：SSDT-%EXT3-WakeScreen-dell。
+2 集成了EXT1和EXT3扩展补丁接口，分别位于睡眠(_PTS)和唤醒(_WAK)。
 3 和《PNP0C0E强制睡眠方法》一起共同实现PNP0C0E睡眠功能。
 4 保留传统屏蔽独显方法的接口。
 
 二、补丁：
-SSDT-%PTSWAK-merge-PRO3
-SSDT-%EXT3-WakeScreen-dell
+1 SSDT-%PTSWAK-merge-PRO4
+
+2 SSDT-%EXT3-Wake_SB.LID和
+  SSDT-%EXT3-Wake_SB.PCI0.LPCB.LID
+  两个补丁作用是修复某些机器开盖屏幕不亮，按任意键才亮屏的问题。不同的机器盖子
+的路径可能不同，搜索“PNP0C0D”，确认其路径，选择合适的补丁。
+
 
 三、更名(见“基本更名.plist”)：
 _PTS to ZPTS(1,N)或者

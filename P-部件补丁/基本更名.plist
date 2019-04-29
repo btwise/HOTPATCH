@@ -52,51 +52,9 @@
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>PCI.VID to PCI.IGPU#1</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>
-					UENJMFZJRF8=
-					</data>
-					<key>Replace</key>
-					<data>
-					UENJMElHUFU=
-					</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>PCI.VID to PCI.IGPU#2</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>
-					VklEXwhfQURSDAAAAgA=
-					</data>
-					<key>Replace</key>
-					<data>
-					SUdQVQhfQURSDAAAAgA=
-					</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>GFX0 to IGPU</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>
-					R0ZYMA==
-					</data>
-					<key>Replace</key>
-					<data>
-					SUdQVQ==
-					</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
 					<string>LPC to LPCB</string>
 					<key>Disabled</key>
-					<true/>
+					<false/>
 					<key>Find</key>
 					<data>
 					TFBDXw==
@@ -104,34 +62,6 @@
 					<key>Replace</key>
 					<data>
 					TFBDQg==
-					</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>SAT0 to SATA</string>
-					<key>Disabled</key>
-					<true/>
-					<key>Find</key>
-					<data>
-					U0FUMA==
-					</data>
-					<key>Replace</key>
-					<data>
-					U0FUQQ==
-					</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>SAT1 to SATA</string>
-					<key>Disabled</key>
-					<true/>
-					<key>Find</key>
-					<data>
-					U0FUMQ==
-					</data>
-					<key>Replace</key>
-					<data>
-					U0FUQQ==
 					</data>
 				</dict>
 				<dict>
@@ -178,44 +108,16 @@
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>B0D3 to HDAU</string>
+					<string>XHC1 to XHC</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>
-					QjBEMw==
+					WEhDMQ==
 					</data>
 					<key>Replace</key>
 					<data>
-					SERBVQ==
-					</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>HDAS to HDEF</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>
-					SERBUw==
-					</data>
-					<key>Replace</key>
-					<data>
-					SERFRg==
-					</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>IGBE to GLAN</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>
-					SUdCRQ==
-					</data>
-					<key>Replace</key>
-					<data>
-					R0xBTg==
+					WEhDXw==
 					</data>
 				</dict>
 				<dict>
@@ -290,6 +192,20 @@
 				</dict>
 				<dict>
 					<key>Comment</key>
+					<string>H_EC to EC</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>
+					SF9FQw==
+					</data>
+					<key>Replace</key>
+					<data>
+					RUNfXw==
+					</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
 					<string>SMBU to SBUS</string>
 					<key>Disabled</key>
 					<false/>
@@ -314,20 +230,6 @@
 					<key>Replace</key>
 					<data>
 					TElEXw==
-					</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>SBTN to SLPB(dell)</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>
-					U0JUTg==
-					</data>
-					<key>Replace</key>
-					<data>
-					U0xQQg==
 					</data>
 				</dict>
 				<dict>

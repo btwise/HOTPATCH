@@ -1,0 +1,103 @@
+说明：
+===
+一、概述：
+ACPI规范了3种睡眠的方式，分别是：
+方式(1)• PNP0C0C — Power Button Device
+方式(2)• PNP0C0D — Lid Device
+方式(3)• PNP0C0E — Sleep Button Device
+苹果系统使用菜单睡眠、系统睡眠和方式(2)睡眠。
+
+大多数机器提供了睡眠按键(‘小月亮’按键，如Thinkpad的FN+F4，dell的FN+Insert等)。
+当按下这个按键时，系统执行方式(3)睡眠。可是，ACPI错误地向系统传递了关机参数而非
+睡眠参数，从而使睡眠失败、系统崩溃。
+
+如果要使用方式(3)睡眠必须修正这个参数或者让这个按键执行方式(2)睡眠。
+
+===
+二、PNP0C0D 和 PNP0C0E 的睡眠条件
+1 PNP0C0D睡眠：
+_LID返回0，执行Notify (***.LID, 0x80)【PNP0C0D】
+
+2 PNP0C0E睡眠：
+执行Notify (***.SLPB, 0x80)【PNP0C0E】
+
+
+===
+三、PNP0C0E强制睡眠方案(以Thinkpad为例)
+1 SSDT-Sleep_Define：
+  补丁里设定3个参数，分别是：MYLD、MPWS、MODE。
+
+  MYLD————定义Method (_LID 的返回参数。
+  0: 关闭屏幕
+  其他: 保持原始屏幕状态
+
+  MPWS————事件传递参数
+  PNP0C0E睡眠时，MPWS传递到PTSWAK，用于纠正“关机参数”为“睡眠参数”。
+
+  MODE————睡眠模式
+  0: PNP0C0D睡眠
+  1: PNP0C0E睡眠
+  
+  三个参数中，修改MODE可以改变睡眠模式。
+  其他2个参数为各补丁调用之用，不可更改。
+
+
+2 SSDT-Sleep_SB.LID 或者 SSDT-Sleep_SB.PCI0.LPCB.LID：
+  修正Method (_LID... 方法。
+  使用时应根据ACPI中_LID的路径选择对应的补丁。
+
+  更名：
+  _LID to XLID
+
+
+3 SSDT-SleepKeyLID-TP——Thinkpad盖子和按键强制睡眠的集成补丁。
+
+  更名：
+  _Q13 to XQ13(TP-FnF4)
+  _Q2B to XQ2B(TP-LID)
+
+
+4 SSDT-%PTSWAK-mergePRO4：
+  和本方法配合的综合补丁。见《PTSWAK综合补丁》。
+
+  更名：
+  见《PTSWAK综合补丁》。
+
+
+四、自行制作SSDT-SleepKeyLID***的方法
+
+1 ACPI中搜索“PNP0C0D”和“PNP0C0E”，确定其名称(假设LID和SLPB)和设备路径。
+如果不存在“PNP0C0E”，添加SSDT-SleepSLPB-add。
+
+2 查找盖子位置和睡眠按键位置，一般情况下是EC的_Qxx。在_Qxx里有Notify (?.LID, 0x80)
+的是盖子位置，有Notify (?.SLPB, 0x80)的是睡眠按键位置。无法确定睡眠按键可以指定任意键。
+
+3 对查找到的Qxx进行config更名。
+
+4 参照样本补丁，修改Notify (***.LID, 0x80)和Notify (***.SLPB, 0x80)的路径。
+
+5 参照样本补丁，修改被更名的盖子XQxx名称。
+
+
+===
+五、完成本方法的补丁组合：
+SSDT-Sleep_Define
++
+SSDT-Sleep_SB.LID 或者 SSDT-Sleep_SB.PCI0.LPCB.LID
++
+SSDT-SleepKeyLID-TP或者自行制作的补丁
++
+SSDT-%PTSWAK-mergePRO4
++
+SSDT-SleepSLPB-add(可能需要)
+
+
+
+===
+六、PNP0C0E睡眠模式的特点：
+1 睡眠过程稍快于传统的方式。
+2 未成功睡眠前，无法终止睡眠。
+
+
+===end
+

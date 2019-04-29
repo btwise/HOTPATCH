@@ -1,0 +1,106 @@
+遮蔽法定制说明:
+***
+本方法：用HOTpatch方法实现遮蔽法驱动USB以及完成USB端口的定制。
+
+*******
+*******
+基本原理：
+ACPI关于USB的端口定义：
+Name (_UPC, Package ()
+{
+   0xFF,
+   XXXX, 
+   0x00, 
+   0x00
+})
+
+其中：
+第一个字节是0xFF时表示该端口存在，0x00表示该端口不存在。
+第二个字节XXXX定义如下:
+0x00————usb2.0
+0x03————usb3.0
+0xFF————内置
+0x09————typeC
+
+第三个字节是0x00
+第四个字节是0x00
+
+_UPC定义了USB的属性，修改这些属性可以使USB工作正常。
+
+
+*******
+*******
+本方法原理：
+将所有_UPC更名为XUPC，使USB失效。然后，我们重新写补丁文件。这个文件
+重新描述了USB数量、每一个端口属性等。这些内容和实际的硬件完全一致，
+这样既驱动了USB，也达到了对USB端口定制的目的。
+
+然而，
+可能ACPI中的一个或者多个文件也包括了_UPC，对_UPC的更名也同样使相关的部件
+失效，需要对这些文件恢复。
+做法是：
+找出这些文件，通过config “drop”它们，然后再把这些文件(可能需要修正)放到patched里。
+
+
+***
+***
+一、基本要求
+1 清除Hackintool生成的驱动：USBPorts.kext。
+2 清除RM的驱动USBInjectAll.kext和定制的SSDT-***文件。
+3 清除其他定制USB所采用的补丁、更名和设置。
+4 XHC控制器名称要求：XHC
+5 USB2.0名称要求：EH01、EH02
+
+二、准备工作
+1 提取ACPI
+2 找出ACPI中除DSDT以外的、包括_UPC的其他SSDT文件，如：
+  dell5480：SSDT-7-TbtTypeC
+3 记录他们的“Length”值，如：
+  SSDT-7-TbtTypeC	：1303
+
+
+三、更名
+_UPC to XUPC(all)
+
+
+四、制作补丁文件和USB端口定制过程
+
+(一)制作XHC补丁文件、定制USB端口
+参考SSDT-XHC-HUB@dell5480文件，增加、删除、修改Scope（）{}部分内容，保证设备路径
+(如：_SB.PCI0.XHC.RHUB.HS01）和DSDT的完全一致(更名后)。
+
+根据自己的情况修正每一个_UPC中的第二个字节：
+内置:	0xFF
+typeC:	0x09
+其他：	0x03
+
+(二)制作EH01、EH02补丁文件、定制USB端口
+EH01和EH02为标准的USB2.0。EH01和EH02必须挂载一个HUB（如：_SB.PCI0.EH01.URTH.URMH）。
+所有的端口都在这个HUB下（如：_SB.PCI0.EH01.URTH.URMH.PRT0）。
+EH01的 HUB下允许接入8个端口；
+EH02的 HUB下允许接入6个端口；
+
+参考EHCx20标准文件，删除、修改Scope（）{}部分内容，保证设备路径
+(如：_SB.PCI0.EH01.URTH.URMH.PRT0）和DSDT的完全一致(更名后)。
+
+根据自己的情况修正每一个_UPC中的第二个字节：
+内置:	0xFF
+其他：	0x00
+
+
+(三)drop ACPI文件(包含_UPC的)
+按“Length”方式drop包含了_UPC的ACPI文件。
+如：
+dell5480:
+SSDT  Length  1303
+参考‘遮蔽法更名和drop.plist’、图式。
+
+
+(四)恢复ACPI文件(包含_UPC的)
+将包含_UPC的ACPI文件放到patched。
+注意：文件里的设备名称，应当是更名后的名称。
+比如：更名中使用了“XHCI to XHC”，而文件中包含了“XHCI”，那么必须将“XHCI”修改为“XHC”。
+
+
+
+*****END

@@ -9,7 +9,7 @@
 3 查看ECDT.aml里"Namepath"项，修正其路径为："\_SB.PCI0.LPCB.EC"。
   按照图1，图2，图3操作。
 4 保存ECDT.aml文件。
-5 config\ACPI\Dorp Table\添加ECDT.aml(见图4)，或者勾选“AutoMerge”。
+5 config\ACPI\Dorp Table\添加ECDT.aml(见图4)。
 
 三、使用
 将修正的ECDT.aml放入patched。

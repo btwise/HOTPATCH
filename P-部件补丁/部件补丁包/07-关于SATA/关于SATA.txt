@@ -1,0 +1,23 @@
+
+一、说明
+注入未被支持的SATA控制器ID。
+
+二、根据SATA控制器ID选择正确的驱动
+
+1 SATA-100-series-unsupported.kext：
+  a103，9d03
+
+2 SATA-200-series-unsupported.kext：
+  a282
+
+3 SATA-RAID-unsupported.kext：
+  282A, 2822
+
+
+三、注意
+1 不再要求SATA控制器名称是SATA。删除更名“SAT0 to SATA”或者“SAT1 to SATA”。
+2 SATA控制器ID不在上述之列或者没有SATA硬盘的，不必使用《SATA驱动》。
+3 如果发生了硬盘不可读错误，使用《硬盘不可读补丁》。
+
+
+===end

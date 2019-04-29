@@ -1,0 +1,6 @@
+
+说明
+六代以前的机器使用Properties方法注入LPC。
+参见《Properties-PCI设备补丁一览表》。
+
+===end

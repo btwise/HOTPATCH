@@ -1,0 +1,88 @@
+
+说明
+===
+
+本方法(假定I2C设备路径是：_SB.PCI0.I2C0.TPAD):
+1 禁止原I2C设备：TPAD。
+2 仿冒一个新I2C设备：TPXX。
+3 TPXX与被禁止的TPAD内容完全相同。
+4 对TPXX内容打补丁。打补丁的过程与DSDT补丁方法相同。
+
+===
+必要条件：
+在DSDT中，TPAD只存在于“Device (TPAD)”内，“Device (TPAD)”以外不存在“TPAD”。
+
+===
+禁止无关联的I2C总线：
+通常，I2C设备位于I2C0或者I2C1总线下。建议将无关联的I2C总线禁止。如，TPAD位于
+I2C0，我们禁止I2C1。
+相关内容的更名和补丁见《禁止不存在的I2C总线》。
+
+===
+新方法补丁过程：
+
+一、GPI0控制器补丁(可能不需要)：
+更名：I2C-GPI0:_STA to XSTA
+补丁：SSDT-I2C-GPI0。
+
+二、禁止原I2C设备(TPAD),并创建新设备TPXX
+参考示例：
+更名：I2C0-TPAD:_STA to XSTA
+补丁：SSDT-I2C0-TPADtoTPxx-Air13IWL
+
+(一)新建设备方法：
+1 创建一个TPXX设备：Device (_SB.PCI0.I2C0.TPXX)。
+1 将DSDT中TPAD的所有内容移植到补丁文件中的TPXX。
+2 替换补丁文件中所有的TPAD为TPXX。
+3 添加必要的外部引用External...修补所有错误。
+
+(二)TPXX其他补丁
+根据自己的情况进行补丁工作，参见：
+https://voodooi2c.github.io/#GPIO%20Pinning/GPIO%20Pinning
+https://www.tonymacx86.com/threads/voodooi2c-help-and-support.243378/
+
+可能需要修改以下内容：
+1 修改_STA内容为：Return (0x0F)。
+
+2 添加缺失的内容：
+  Name (SBFG, ResourceTemplate ()
+  {
+     GpioInt (Level, ActiveLow, ExclusiveAndWake, PullDefault, 0x0000,
+     "\\_SB.PCI0.GPI0", 0x00, ResourceConsumer, ,
+     )
+     {   // Pin list
+         0x0000
+     }
+  })
+
+3 修改_CRS内容为:
+  ......
+  Return (ConcatenateResTemplate (SBFB, SBFG))或者
+  ......
+  Return (ConcatenateResTemplate (SBFB, SBFI))或者
+  ......
+  Return (SBFI)
+
+4 填写“Pin list”
+  参见《查询GPI0-pin》。
+
+5 修改其他内容
+  ......
+
+
+四、其他参考的更名和补丁：
+更名：I2C1-TPD1:_STA to XSTA
+补丁：SSDT-I2C1-TPD1toTPxx-dell5480
+
+
+五、注意事项：
+1 选择正确的I2C设备驱动。
+2 选择合适的操作系统补丁。
+3 使用《config禁止I2C系统驱动补丁.plist》。
+  或者删除SLE的AppleIntelLpssI2C.kext和AppleIntelLpssI2CController.kext。
+4 删除VoodooPS2Controller.kext\Contents\PlugIns\下的：
+  VoodooPS2Trackpad.kext。
+5 本方法不适合SKL机器。
+
+===
+end

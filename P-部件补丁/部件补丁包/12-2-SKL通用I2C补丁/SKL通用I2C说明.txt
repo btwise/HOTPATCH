@@ -1,0 +1,30 @@
+
+说明
+===
+使用HOTpatch方法完成SKL机器的I2C补丁过程。
+假定：I2C设备路径是_SB.PCI0.I2C0。
+
+本方法：
+1 I2C0更名为I2X0。
+2 禁止已经更名的I2X0设备。
+3 重新创建一个新的I2C0。
+
+样本：
+SSDT-I2C0-SKL
+SSDT-I2C1-SKL
+
+更名：
+I2C0 to I2X0
+I2X0:_STA to XSTA
+
+I2C1 to I2X1
+I2X1:_STA to XSTA
+
+
+注意：
+1 如果I2C设备路径是不是I2C0或者I2C1，参考上述样本修改补丁里的相关内容和更名。
+2 样本中的更名有顺序要求。
+
+
+===
+end

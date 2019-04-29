@@ -1,0 +1,25 @@
+
+一、说明：
+本补丁以文件方式注入X86，适用于4代及以上机器。
+注：3代机器勾选config\Kernel and Patches\KernelXCPM即可，无需其他方式注入X86。
+
+二、补丁：
+SSDT-XCPM_PR.CPU0
+SSDT-XCPM_PR.P000
+SSDT-XCPM_PR.PR00
+
+SSDT-XCPM_SB.CPU0
+SSDT-XCPM_SB.P000
+SSDT-XCPM_SB.PR00
+
+三、更名：
+无
+
+四、使用方法：
+1 DSDT中，搜索“Processor”，确定"CPU"名称以及所属"设备名称"，选择对应的补丁，
+  参见"X86图示1"、"X86图示2"。
+2 禁止勾选config\ACPI\PlusinType。
+
+
+===end
+

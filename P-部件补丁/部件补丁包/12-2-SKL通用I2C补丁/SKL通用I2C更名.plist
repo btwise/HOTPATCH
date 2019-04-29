@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ACPI</key>
+	<dict>
+		<key>DSDT</key>
+		<dict>
+			<key>Patches</key>
+			<array>
+				<dict>
+					<key>Comment</key>
+					<string>I2C0 to I2X0</string>
+					<key>Disabled</key>
+					<true/>
+					<key>Find</key>
+					<data>
+					STJDMA==
+					</data>
+					<key>Replace</key>
+					<data>
+					STJYMA==
+					</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>I2X0:_STA to XSTA</string>
+					<key>Disabled</key>
+					<true/>
+					<key>Find</key>
+					<data>
+					X1NUQQ==
+					</data>
+					<key>Replace</key>
+					<data>
+					WFNUQQ==
+					</data>
+					<key>TgtBridge</key>
+					<data>
+					STJYMA==
+					</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>I2C1 to I2X1</string>
+					<key>Disabled</key>
+					<true/>
+					<key>Find</key>
+					<data>
+					STJDMQ==
+					</data>
+					<key>Replace</key>
+					<data>
+					STJYMQ==
+					</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>I2X1:_STA to XSTA</string>
+					<key>Disabled</key>
+					<true/>
+					<key>Find</key>
+					<data>
+					X1NUQQ==
+					</data>
+					<key>Replace</key>
+					<data>
+					WFNUQQ==
+					</data>
+					<key>TgtBridge</key>
+					<data>
+					STJYMQ==
+					</data>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

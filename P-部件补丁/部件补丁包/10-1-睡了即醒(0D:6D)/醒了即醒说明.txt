@@ -1,0 +1,36 @@
+*****
+*****
+一、说明：
+解决睡眠后立即被唤醒的问题。
+
+二、补丁：
+SSDT-Sleep_PRW-0D/6D
+
+三、更名：
+EH01:_PRW to XPRW
+EH02:_PRW to XPRW
+XHC:_PRW to XPRW
+XDCI:_PRW to XPRW
+HDEF:_PRW to XPRW
+HDAS:_PRW to XPRW
+AZAL:_PRW to XPRW
+GLAN:_PRW to XPRW
+IGBE:_PRW to XPRW
+CNVW:_PRW to XPRW
+EH01:_PRW to XPRW 或者EH01:_PRW to XPRW(Scope)
+EH02:_PRW to XPRW 或者EH02:_PRW to XPRW(Scope)
+XHC:_PRW to XPRW  或者XHC:_PRW to XPRW(Scope)
+
+
+四、使用：
+1 选择以上适合的更名。
+
+2 修改补丁的“PPPW”
+  DSDT中，查看以上某个部件的“_PRW”内容(如XHC)，使“_PRW”第一个字节(0D或者6D)，
+与补丁中“PPPW”的第一个字节相同。
+
+
+五、建议：
+先进行config更名，通过system-DSDT确定无误后，再添加补丁。
+
+===end
